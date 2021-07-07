@@ -8,10 +8,10 @@ defmodule DungeonCrawl.Room do
 
     def all, do: [
         %Room{
-            description: "You can see the light of the day. You found the exit!",
+            description: "You can see the light of day. You found the exit!",
             actions: [forward()],
-            trigger: Triggers.exit
-        },
+            trigger: Triggers.Exit
+            },
         %Room{
             description: "You found a quiet place. Looks safe for a little nap",
             actions: [forward(), rest()]
