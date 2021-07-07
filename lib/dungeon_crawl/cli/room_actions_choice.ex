@@ -8,8 +8,10 @@ defmodule DungeonCrawl.CLI.RoomActionsChoice do
 
         Shell.info(room.description())
 
+        #display_options ja invoca a lista de nomes na propria função,
+        #por meio do protocolo
         chosen_action = room_actions
-        |> Enum.map(&(&1.label))
+        #|> Enum.map(&(&1.label))
         |> display_options
         |> generate_question
         |> Shell.prompt

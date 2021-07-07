@@ -7,7 +7,9 @@ defmodule DungeonCrawl.CLI.HeroChoice do
         heroes = DungeonCrawl.Heroes.all()
         find_hero_by_index = &Enum.at(heroes, &1)
         heroes
-        |> Enum.map(&(&1.name))
+        #Enum.map(&(&1.name)) retorna uma lista com o nome dos herois
+        #display_options já invoca nome diretamente na função, com o uso de protocolos
+        #|> Enum.map(&(&1.name))
         |> display_options
         |> generate_question
         |> Shell.prompt
