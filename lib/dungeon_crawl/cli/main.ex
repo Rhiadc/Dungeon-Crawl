@@ -1,13 +1,25 @@
 defmodule DungeonCrawl.CLI.Main do
     alias Mix.Shell.IO, as: Shell
     alias DungeonCrawl.Character
+    import DungeonCrawl.CLI.BaseCommands
     #testar usar o alias
 
 
     def start_game() do
         welcome_message()
         Shell.prompt("Press enter to continue")
-        crawl(hero_choice(), DungeonCrawl.Room.all())
+        dificulty = select_dificulty(["easy", "medium", "hard"])
+        crawl(hero_choice(dificulty), DungeonCrawl.Room.all())
+    end
+
+    def select_dificulty(dificulty) do
+        dificulty
+        |> display_options
+        |> generate_question_dificulty
+        |> Shell.prompt
+        |> parse_answer_dificulty
+        
+
     end
 
     defp welcome_message do
@@ -16,15 +28,39 @@ defmodule DungeonCrawl.CLI.Main do
         Shell.info("You need to survive and find the exit")
     end
 
-    defp hero_choice do
+    defp hero_choice(dificulty) do
         hero = DungeonCrawl.CLI.HeroChoice.start()
-        %{hero | name: "You"}
+        %{hero | name: "You", dificulty: dificulty}
     end
 
     defp trigger_action({room, action}, character) do
         Shell.cmd("clear")
         room.trigger.run(character, action)
     end
+
+    defp reroll(rooms, _char = %{dificulty: 1}) do
+        IO.puts "something"
+        Enum.random(rooms)
+    end
+
+    defp reroll(rooms, _char = %{dificulty: 2}) do
+        selected_room = Enum.random(rooms)
+        if selected_room.description == "You can see the light of day. You found the exit!" do
+            Enum.random(rooms)
+        else 
+            selected_room
+        end
+    end
+
+    defp reroll(rooms, _char = %{dificulty: 3}) do
+        selected_room = Enum.random(rooms)
+        if selected_room.description == "You can see the light of day. You found the exit!" do
+            Enum.random(rooms)
+        else 
+            selected_room
+        end
+    end
+
 
     defp handle_action_result({_, :exit}),
         do: Shell.info("You found the exit. You won the game. Congratulations!")
@@ -47,9 +83,9 @@ defmodule DungeonCrawl.CLI.Main do
         Shell.cmd("clear")
 
         Shell.info(Character.current_stats(character))
-
+        Shell.info(Character.current_dificulty(character))
         rooms
-        |> Enum.random
+        |> reroll(character)
         |> DungeonCrawl.CLI.RoomActionsChoice.start
         |> trigger_action(character)
         |> handle_action_result

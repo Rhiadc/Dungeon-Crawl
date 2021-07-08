@@ -15,6 +15,16 @@ defmodule DungeonCrawl.CLI.BaseCommands do
         "Which one? [#{options}]\n"
     end
 
+    def generate_question_dificulty(options) do
+        options = Enum.join(1..Enum.count(options), ",")
+        "Select your dificulty [#{options}]\n"
+    end
+
+    def parse_answer_dificulty(answer) do
+        {option, _} = Integer.parse(answer)
+        option
+    end
+
     def parse_answer(answer) do
         {option, _} = Integer.parse(answer)
         option - 1
