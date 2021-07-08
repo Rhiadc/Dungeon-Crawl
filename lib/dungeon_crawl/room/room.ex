@@ -21,4 +21,12 @@ defmodule DungeonCrawl.Room do
         
 
     ]
+
+    def initial_room, do: 
+        %Room{
+            description: "You see an enemy blocking your path",
+            actions: [forward()],
+            trigger: Triggers.Enemy
+        }
+    
 end

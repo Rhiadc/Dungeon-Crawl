@@ -7,7 +7,8 @@ defmodule DungeonCrawl.Character do
         max_hit_points: non_neg_integer,
         attack_description: String.t,
         damage_range: Range.t,
-        dificulty: non_neg_integer
+        dificulty: non_neg_integer,
+        room_count: 0
     }
 
     defstruct name: nil,
@@ -16,7 +17,8 @@ defmodule DungeonCrawl.Character do
             max_hit_points: 0,
             attack_description: nil,
             damage_range: nil,
-            dificulty: 0
+            dificulty: 0,
+            room_count: 0
 
     defimpl String.Chars do
         def to_string(character), do: character.name

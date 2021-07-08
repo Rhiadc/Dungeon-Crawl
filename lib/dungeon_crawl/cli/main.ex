@@ -9,7 +9,7 @@ defmodule DungeonCrawl.CLI.Main do
         welcome_message()
         Shell.prompt("Press enter to continue")
         dificulty = select_dificulty(["easy", "medium", "hard"])
-        crawl(hero_choice(dificulty), DungeonCrawl.Room.all())
+        crawl(hero_choice(dificulty), DungeonCrawl.Room.initial_room())
     end
 
     def select_dificulty(dificulty) do
@@ -39,7 +39,6 @@ defmodule DungeonCrawl.CLI.Main do
     end
 
     defp reroll(rooms, _char = %{dificulty: 1}) do
-        IO.puts "something"
         Enum.random(rooms)
     end
 
@@ -65,8 +64,10 @@ defmodule DungeonCrawl.CLI.Main do
     defp handle_action_result({_, :exit}),
         do: Shell.info("You found the exit. You won the game. Congratulations!")
 
-    defp handle_action_result({character, _}),
-        do: crawl(character, DungeonCrawl.Room.all())
+    defp handle_action_result({character, _}) do
+        new_character = %{character | room_count: character.room_count + 1 }
+        crawl(new_character, DungeonCrawl.Room.all())
+    end 
 
     defp crawl(%{hit_points: 0}, _) do
         Shell.prompt("")
@@ -75,6 +76,18 @@ defmodule DungeonCrawl.CLI.Main do
         Shell.info("You fall onto the floor without strength to carry on.")
         Shell.info("Game over!")
         Shell.prompt("")
+    end
+
+    defp crawl(character = %{room_count: 0}, room) do
+        Shell.info("You aproach the first room...")
+        Shell.prompt("Press Enter to continue")
+        Shell.cmd("clear")
+        Shell.info(Character.current_stats(character))
+        
+        room
+        |> DungeonCrawl.CLI.RoomActionsChoice.start
+        |> trigger_action(character)
+        |> handle_action_result
     end
 
     defp crawl(character, rooms) do
