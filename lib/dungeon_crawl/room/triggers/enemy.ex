@@ -10,7 +10,8 @@ defmodule DungeonCrawl.Room.Triggers.Enemy do
         Shell.info("The enemy #{enemy.name} wants to fight.")
         Shell.info("You were prepared and attack first.")
         {updated_char, _enemy} = DungeonCrawl.Battle.fight(character, enemy)
-        
+
         {updated_char, :forward}
     end
 end
+
