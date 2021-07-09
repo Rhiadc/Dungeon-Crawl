@@ -18,6 +18,11 @@ defmodule DungeonCrawl.Room do
             actions: [forward()],
             trigger: Triggers.Enemy
         },
+        %Room{
+            description: "You see a secret room...",
+            actions: [forward()],
+            trigger: Triggers.Secret
+        }
         
 
     ]
