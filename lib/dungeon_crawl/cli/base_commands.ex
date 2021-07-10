@@ -13,7 +13,7 @@ defmodule DungeonCrawl.CLI.BaseCommands do
                 display_invalid_options()
                 ask_for_index(options)
             {option, _} ->
-                option -1
+                option - 1
         end
     end
 
