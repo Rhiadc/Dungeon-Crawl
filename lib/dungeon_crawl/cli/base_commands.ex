@@ -52,4 +52,11 @@ defmodule DungeonCrawl.CLI.BaseCommands do
         {option, _} = Integer.parse(answer)
         option - 1
     end
+
+    def ask_for_option(options) do
+        index = ask_for_index(options)
+        chosen_option = Enum.at(options, index)
+        chosen_option
+            || (display_invalid_options() && ask_for_option(options))
+    end
 end
