@@ -1,20 +1,18 @@
 defmodule DungeonCrawl.CLI.HeroChoice do
     alias Mix.Shell.IO, as: Shell
     import DungeonCrawl.CLI.BaseCommands
+
     def start do
         Shell.cmd("clear")
         Shell.info("Start by choosing your hero:")
+
         heroes = DungeonCrawl.Heroes.all()
-        find_hero_by_index = &Enum.at(heroes, &1)
+        #find_hero_by_index = &Enum.at(heroes, &1)
         heroes
         #Enum.map(&(&1.name)) retorna uma lista com o nome dos herois
         #display_options já invoca nome diretamente na função, com o uso de protocolos
         #|> Enum.map(&(&1.name))
-        |> display_options
-        |> generate_question
-        |> Shell.prompt
-        |> parse_answer
-        |> find_hero_by_index.()
+        |> ask_for_option
         |> confirm_hero
         end
 
