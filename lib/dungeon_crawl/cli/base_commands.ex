@@ -53,7 +53,19 @@ defmodule DungeonCrawl.CLI.BaseCommands do
         option - 1
     end
 
-    
+    def parse_answer!(answer) do
+        case Integer.parse(answer) do
+            :error ->
+                raise DungeonCrawl.CLI.InvalidOptionError
+            {option, _} ->
+                option - 1
+        end
+    end
+
+    def find_option_by_index!(index, options) do
+        Enum.at(options, index) || raise DungeonCrawl.CLI.InvalidOptionError
+    end
+
     def ask_for_option(options) do
         index = ask_for_index(options)
         chosen_option = Enum.at(options, index)
