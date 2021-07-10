@@ -53,6 +53,7 @@ defmodule DungeonCrawl.CLI.BaseCommands do
         option - 1
     end
 
+    
     def ask_for_option(options) do
         index = ask_for_index(options)
         chosen_option = Enum.at(options, index)
